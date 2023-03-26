@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "cave-survey",
+	"version": "${version}",
+	"name": "Cave Survey",
+	"description": "This mod adds cave maps to the game.",
+	"authors": [
+      "Mehrad Nayyeri"
+	],
+	"contact": {
+      "homepage": "https://github.com/MehradN/CaveSurvey",
+      "sources": "https://github.com/MehradN/CaveSurvey",
+      "issues": "https://github.com/MehradN/CaveSurvey/issues"
+	},
+	"license": "GPL-3.0",
+	"icon": "assets/cave-survey/icon.png",
+	"environment": "*",
+	"entrypoints": {
+      "main": [
+        "ir.mehradn.cavesurvey.CaveSurvey"
+      ]
+	},
+	"mixins": [
+      "cave-survey.mixins.json"
+	],
+	"depends": {
+      "fabricloader": ">=0.14.18",
+      "minecraft": "~1.19.4",
+      "java": ">=17",
+      "fabric-api": "*"
+	}
+}

@@ -35,6 +35,17 @@ public class CaveMapItem extends MapItem implements PolymerItem {
 
     public void update(Level level, Entity viewer, MapItemSavedData data) { } // TODO
 
+    public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+        if (level.isClientSide)
+            return;
+        MapItemSavedData data = getSavedData(stack, level);
+        if (data == null)
+            return;
+        if (entity instanceof Player player)
+            data.tickCarriedBy(player, stack);
+        // TODO: Add some sort of automatic update
+    }
+
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         super.appendHoverText(stack, level, tooltipComponents, isAdvanced);
         Integer id = getMapId(stack);
@@ -43,6 +54,17 @@ public class CaveMapItem extends MapItem implements PolymerItem {
     }
 
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
-        return InteractionResultHolder.consume(player.getItemInHand(usedHand));
-    } // TODO
+        ItemStack stack = player.getItemInHand(usedHand);
+        if (level.isClientSide)
+            return InteractionResultHolder.success(stack);
+
+        MapItemSavedData data = getSavedData(stack, level);
+        if (data == null)
+            return InteractionResultHolder.fail(stack);
+        if (data.locked)
+            return InteractionResultHolder.consume(stack);
+
+        this.update(level, player, data);
+        return InteractionResultHolder.success(stack);
+    }
 }

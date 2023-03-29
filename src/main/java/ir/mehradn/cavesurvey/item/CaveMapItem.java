@@ -1,6 +1,7 @@
 package ir.mehradn.cavesurvey.item;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
+import eu.pb4.polymer.core.api.item.PolymerItemUtils;
 import ir.mehradn.cavesurvey.mixin.accessor.MapItemAccessor;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -16,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-// TODO: FIX ITEM FRAMES
 public class CaveMapItem extends MapItem implements PolymerItem {
 
     public CaveMapItem(Properties properties) {
@@ -25,6 +25,14 @@ public class CaveMapItem extends MapItem implements PolymerItem {
 
     public Item getPolymerItem(ItemStack itemStack, ServerPlayer player) {
         return Items.FILLED_MAP;
+    }
+
+    public ItemStack getPolymerItemStack(ItemStack itemStack, TooltipFlag context, ServerPlayer player) {
+        ItemStack out = PolymerItemUtils.createItemStack(itemStack, context, player);
+        Integer id = getMapId(itemStack);
+        if (id != null)
+            MapItemAccessor.InvokeStoreMapData(out, id);
+        return out;
     }
 
     public static ItemStack create(Level level, int x, int z, byte scale, boolean trackingPosition, boolean unlimitedTracking) {

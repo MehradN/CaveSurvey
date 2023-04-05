@@ -14,4 +14,9 @@ public interface MapItemAccessor {
                                               boolean unlimitedTracking, ResourceKey<Level> dimension) {
         throw new LinkageError();
     }
+
+    @Invoker("storeMapData")
+    static void InvokeStoreMapData(ItemStack stack, int mapId) {
+        throw new LinkageError();
+    }
 }

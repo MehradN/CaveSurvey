@@ -1,6 +1,8 @@
 package ir.mehradn.cavesurvey.item;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
+import net.minecraft.core.particles.ShriekParticleOption;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -10,6 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class EmptyCaveMapItem extends ComplexItem implements PolymerItem {
@@ -28,9 +31,16 @@ public class EmptyCaveMapItem extends ComplexItem implements PolymerItem {
 
         if (!player.getAbilities().instabuild)
             stack.shrink(1);
+
         player.awardStat(Stats.ITEM_USED.get(this));
         player.level.playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0f, 1.0f);
         player.level.playSound(null, player, SoundEvents.SCULK_CLICKING, player.getSoundSource(), 1.0f, 1.0f);
+        if (level instanceof ServerLevel serverLevel) {
+            Vec3 origin = player.getEyePosition().add(player.getHandHoldingItemAngle(ModItems.CAVE_MAP)).add(0, -1, 0);
+            serverLevel.sendParticles(new ShriekParticleOption(0), origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
+            serverLevel.sendParticles(new ShriekParticleOption(5), origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
+            serverLevel.sendParticles(new ShriekParticleOption(10), origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
+        }
 
         ItemStack newStack = CaveMapItem.create(level, player.getBlockX(), player.getBlockZ(), (byte)0, true, false);
         MapItemSavedData data = MapItem.getSavedData(newStack, level);

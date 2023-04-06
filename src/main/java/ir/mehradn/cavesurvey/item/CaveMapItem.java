@@ -63,6 +63,9 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         int blockRadius = 16; // TODO: Add a system to change this
         int pixelRadius = blockRadius / scale;
 
+        if (MAP_SIZE + pixelRadius + 4 < relativeX || relativeX < -pixelRadius - 4 ||
+            MAP_SIZE + pixelRadius + 4 < relativeZ || relativeZ < -pixelRadius - 4)
+            return;
         CaveMappingAlgorithm.PixelMatrix matrix = CaveMappingAlgorithm.run(headPos, blockRadius, level);
 
         for (int pixelX = relativeX - pixelRadius; pixelX < relativeX + pixelRadius; pixelX++) {

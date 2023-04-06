@@ -78,7 +78,6 @@ public class CaveMapItem extends MapItem implements PolymerItem {
                 double averageFluidDepth = 0.0;
                 int pixelCount = 0;
                 int brightCount = 0;
-                int waterCount = 0;
                 LinkedHashMultiset<MaterialColor> innerColors = LinkedHashMultiset.create();
                 for (int innerX = 0; innerX < scale; innerX++) {
                     for (int innerZ = 0; innerZ < scale; innerZ++) {
@@ -93,19 +92,24 @@ public class CaveMapItem extends MapItem implements PolymerItem {
                         pixelCount++;
                         if (info.reachesSky())
                             brightCount++;
-                        if (info.color() == MaterialColor.WATER)
-                            waterCount++;
 
                         averageFluidDepth += info.fluidDepth();
                         averageHeight += info.y();
                         innerColors.add(info.color());
                     }
                 }
+
+                if (pixelCount == 0) {
+                    previousAverageHeight = 0;
+                    continue;
+                }
                 averageHeight /= pixelCount;
                 averageFluidDepth /= pixelCount;
 
+                MaterialColor color = Iterables.getFirst(Multisets.copyHighestCountFirst(innerColors), MaterialColor.NONE);
+
                 int brightnessLevel;
-                if (waterCount >= pixelCount / 2) {
+                if (color == MaterialColor.WATER) {
                     double darkness = averageFluidDepth * 0.1 + (double)(pixelX + pixelZ & 1) * 0.2;
                     if (darkness > 0.9)
                         brightnessLevel = 0;
@@ -126,10 +130,9 @@ public class CaveMapItem extends MapItem implements PolymerItem {
                     brightnessLevel++;
 
                 previousAverageHeight = averageHeight;
-                if (pixelCount <= Mth.square(scale) / 2 || distance >= Mth.square(pixelRadius))
+                if (pixelCount < Mth.square(scale) / 2 || distance >= Mth.square(pixelRadius))
                     continue;
 
-                MaterialColor color = Iterables.getFirst(Multisets.copyHighestCountFirst(innerColors), MaterialColor.NONE);
                 MaterialColor.Brightness brightness = Arrays.asList(
                     MaterialColor.Brightness.LOWEST,
                     MaterialColor.Brightness.LOW,

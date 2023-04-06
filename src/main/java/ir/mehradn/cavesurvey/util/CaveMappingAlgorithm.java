@@ -146,10 +146,10 @@ public class CaveMappingAlgorithm {
                     } else {
                         color = getCorrectStateForFluidBlock(this.level, state, pos).getMapColor(this.level, pos);
                         BlockPos fluidPos = pos;
-                        do {
+                        while (fluidPos.getY() > this.level.getMinBuildHeight() && !chunk.getBlockState(fluidPos).getFluidState().isEmpty()) {
                             fluidPos = fluidPos.below();
                             fluidDepth++;
-                        } while (fluidPos.getY() - 1 > this.level.getMaxBuildHeight() && !chunk.getBlockState(pos).getFluidState().isEmpty());
+                        }
                     }
 
                     return new PixelInfo(color, pos.getY(), fluidDepth, reachesSky);
@@ -172,7 +172,7 @@ public class CaveMappingAlgorithm {
         public BlockPos south = null;
         public BlockPos west = null;
         public BlockPos east = null;
-        public PixelInfo pixelInfo;
+        public PixelInfo pixelInfo = null;
 
         public CloudCalculations(BlockPos initialPosition, ColorGrabber colorGrabber) {
             if (initialPosition == null)

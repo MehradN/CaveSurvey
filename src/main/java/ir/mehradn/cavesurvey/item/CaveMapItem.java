@@ -50,7 +50,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         return stack;
     }
 
-    public void update(Level level, Entity viewer, MapItemSavedData data) {
+    public static void updateMap(Level level, Entity viewer, MapItemSavedData data) {
         if (level.dimension() != data.dimension || !(viewer instanceof Player player))
             return;
 
@@ -60,7 +60,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         int centerZ = data.centerZ;
         int relativeX = (headPos.getX() - centerX) / scale + MAP_SIZE / 2;
         int relativeZ = (headPos.getZ() - centerZ) / scale + MAP_SIZE / 2;
-        int blockRadius = 128; // TODO: Add a system to change this
+        int blockRadius = 16; // TODO: Add a system to change this
         int pixelRadius = blockRadius / scale;
 
         CaveMappingAlgorithm.PixelMatrix matrix = CaveMappingAlgorithm.run(headPos, blockRadius, level);
@@ -106,7 +106,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
 
                 int brightnessLevel;
                 if (waterCount >= pixelCount / 2) {
-                    double darkness = averageFluidDepth / Mth.square(scale) * 0.1 + (double)(pixelX + pixelZ & 1) * 0.2;
+                    double darkness = averageFluidDepth * 0.1 + (double)(pixelX + pixelZ & 1) * 0.2;
                     if (darkness > 0.9)
                         brightnessLevel = 0;
                     else if (darkness > 0.5)
@@ -125,7 +125,6 @@ public class CaveMapItem extends MapItem implements PolymerItem {
                 if (brightCount >= pixelCount / 2)
                     brightnessLevel++;
 
-
                 previousAverageHeight = averageHeight;
                 if (pixelCount <= Mth.square(scale) / 2 || distance >= Mth.square(pixelRadius))
                     continue;
@@ -140,6 +139,10 @@ public class CaveMapItem extends MapItem implements PolymerItem {
                 data.updateColor(pixelX, pixelZ, color.getPackedId(brightness));
             }
         }
+    }
+
+    public void update(Level level, Entity viewer, MapItemSavedData data) {
+        updateMap(level, viewer, data);
     }
 
     public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {

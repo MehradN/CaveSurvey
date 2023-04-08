@@ -1,4 +1,6 @@
 {
+  "item.cave-survey.cave_map": "Empty Cave Map",
+  "item.cave-survey.filled_cave_map": "Cave Map",
   "filled_cave_map.vision": "Vision %s",
   "filled_cave_map.vision_level": "(Level %s/%s)"
 }

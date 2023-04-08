@@ -1,5 +1,6 @@
 package ir.mehradn.cavesurvey.item.crafting;
 
+import ir.mehradn.cavesurvey.item.CaveMapItem;
 import ir.mehradn.cavesurvey.item.ModItems;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
@@ -51,6 +52,7 @@ public class CaveMapCloningRecipe extends CustomRecipe {
             return ItemStack.EMPTY;
         ItemStack cloned = filled.copy();
         cloned.setCount(empty + 1);
+        CaveMapItem.setVisionLevel(cloned, 0);
         return cloned;
     }
 

@@ -45,7 +45,7 @@ public class EmptyCaveMapItem extends ComplexItem implements PolymerItem {
         ItemStack newStack = CaveMapItem.create(level, player.getBlockX(), player.getBlockZ(), (byte)0, true, false);
         MapItemSavedData data = MapItem.getSavedData(newStack, level);
         if (data != null)
-            CaveMapItem.updateMap(level, player, data);
+            CaveMapItem.updateMap(level, player, data, 0);
 
         if (stack.isEmpty())
             return InteractionResultHolder.consume(newStack);

@@ -1,6 +1,7 @@
 package ir.mehradn.cavesurvey;
 
-import ir.mehradn.cavesurvey.event.CreativeMenuItems;
+import ir.mehradn.cavesurvey.event.ItemGroupModification;
+import ir.mehradn.cavesurvey.event.LootTableModification;
 import ir.mehradn.cavesurvey.item.ModItems;
 import ir.mehradn.cavesurvey.item.crafting.ModRecipes;
 import net.fabricmc.api.ModInitializer;
@@ -15,6 +16,7 @@ public class CaveSurvey implements ModInitializer {
 	public void onInitialize() {
         ModItems.register();
         ModRecipes.register();
-        CreativeMenuItems.register();
+        ItemGroupModification.register();
+        LootTableModification.register();
 	}
 }

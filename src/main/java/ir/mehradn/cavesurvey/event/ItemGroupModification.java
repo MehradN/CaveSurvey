@@ -6,12 +6,12 @@ import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.fabricmc.fabric.impl.itemgroup.MinecraftItemGroups;
 import net.minecraft.world.item.Items;
 
-public class CreativeMenuItems {
+public class ItemGroupModification {
     public static void register() {
-        ItemGroupEvents.modifyEntriesEvent(MinecraftItemGroups.TOOLS_ID).register(CreativeMenuItems::addTools);
+        ItemGroupEvents.modifyEntriesEvent(MinecraftItemGroups.TOOLS_ID).register(ItemGroupModification::addEmptyCaveMap);
     }
 
-    private static void addTools(FabricItemGroupEntries entries) {
+    private static void addEmptyCaveMap(FabricItemGroupEntries entries) {
         entries.addAfter(Items.MAP, ModItems.CAVE_MAP); // TODO: FOR SOME REASON DOESN'T WORK
     }
 }

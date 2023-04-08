@@ -205,6 +205,9 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         int toBeScaled = tag.getInt(MapItem.MAP_SCALE_TAG);
         boolean toBeLocked = tag.getBoolean(MapItem.MAP_LOCK_TAG);
 
+        if (!isAdvanced.isAdvanced() && !stack.hasCustomHoverName())
+            tooltipComponents.add(Component.literal("#" + id).withStyle(ChatFormatting.GRAY));
+
         if (data.locked || toBeLocked)
             tooltipComponents.add(Component.translatable("filled_map.locked").withStyle(ChatFormatting.GRAY));
 
@@ -219,8 +222,6 @@ public class CaveMapItem extends MapItem implements PolymerItem {
             int scale = Math.min(data.scale + toBeScaled, 2);
             tooltipComponents.add(Component.translatable("filled_map.scale", 1 << scale).withStyle(ChatFormatting.GRAY));
             tooltipComponents.add(Component.translatable("filled_map.level", scale, 2).withStyle(ChatFormatting.GRAY));
-        } else if (!stack.hasCustomHoverName()) {
-            tooltipComponents.add(Component.literal("#" + id).withStyle(ChatFormatting.GRAY));
         }
     }
 

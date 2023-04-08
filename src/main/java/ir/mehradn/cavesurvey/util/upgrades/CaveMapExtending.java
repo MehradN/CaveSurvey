@@ -19,7 +19,7 @@ public class CaveMapExtending implements CaveMapUpgrade {
 
     public boolean valid(ItemStack stack, Level level) {
         MapItemSavedData data = MapItem.getSavedData(stack, level);
-        return data != null && !data.isExplorationMap() && data.scale < 2;
+        return data != null && !data.locked && !data.isExplorationMap() && data.scale < 2;
     }
 
     public ItemStack upgrade(ItemStack stack, RegistryAccess registryAccess) {

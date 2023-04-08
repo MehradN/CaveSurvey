@@ -5,7 +5,9 @@ import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
 public class CaveMapImproving implements CaveMapUpgrade {
     public Integer id() {
@@ -17,7 +19,8 @@ public class CaveMapImproving implements CaveMapUpgrade {
     }
 
     public boolean valid(ItemStack stack, Level level) {
-        return CaveMapItem.getVisionLevel(stack) < 2;
+        MapItemSavedData data = MapItem.getSavedData(stack, level);
+        return data != null && !data.locked && CaveMapItem.getVisionLevel(stack) < 2;
     }
 
     public ItemStack upgrade(ItemStack stack, RegistryAccess registryAccess) {

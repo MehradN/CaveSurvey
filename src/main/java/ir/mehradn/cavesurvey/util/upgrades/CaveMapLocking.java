@@ -1,5 +1,6 @@
 package ir.mehradn.cavesurvey.util.upgrades;
 
+import ir.mehradn.cavesurvey.item.CaveMapItem;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,6 +27,7 @@ public class CaveMapLocking implements CaveMapUpgrade {
         ItemStack newStack = stack.copy();
         newStack.setCount(1);
         newStack.getOrCreateTag().putBoolean(MapItem.MAP_LOCK_TAG, true);
+        CaveMapItem.setVisionLevel(newStack, 0);
         return newStack;
     }
 }

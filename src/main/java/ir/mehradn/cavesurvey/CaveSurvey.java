@@ -2,6 +2,7 @@ package ir.mehradn.cavesurvey;
 
 import ir.mehradn.cavesurvey.event.CreativeMenuItems;
 import ir.mehradn.cavesurvey.item.ModItems;
+import ir.mehradn.cavesurvey.item.crafting.ModRecipes;
 import net.fabricmc.api.ModInitializer;
 
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ public class CaveSurvey implements ModInitializer {
 
 	public void onInitialize() {
         ModItems.register();
+        ModRecipes.register();
         CreativeMenuItems.register();
 	}
 }

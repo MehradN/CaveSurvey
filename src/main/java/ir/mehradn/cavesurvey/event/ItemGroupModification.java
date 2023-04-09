@@ -12,6 +12,6 @@ public class ItemGroupModification {
     }
 
     private static void addEmptyCaveMap(FabricItemGroupEntries entries) {
-        entries.addAfter(Items.MAP, ModItems.CAVE_MAP); // TODO: FOR SOME REASON DOESN'T WORK
+        entries.addAfter(Items.MAP, ModItems.CAVE_MAP);
     }
 }

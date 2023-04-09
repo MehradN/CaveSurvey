@@ -1,5 +1,6 @@
 package ir.mehradn.cavesurvey.item.crafting;
 
+import eu.pb4.polymer.core.api.item.PolymerRecipe;
 import ir.mehradn.cavesurvey.item.ModItems;
 import ir.mehradn.cavesurvey.util.upgrades.CaveMapUpgrade;
 import net.minecraft.core.NonNullList;
@@ -16,7 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
-public class CaveMapUpgradeRecipe<T extends CaveMapUpgrade> extends ShapedRecipe {
+public class CaveMapUpgradeRecipe<T extends CaveMapUpgrade> extends ShapedRecipe implements PolymerRecipe {
     public static final HashMap<Integer, RecipeSerializer<?>> serializers = new HashMap<>();
     private final T upgrade;
 

@@ -1,5 +1,6 @@
 package ir.mehradn.cavesurvey.item.crafting;
 
+import eu.pb4.polymer.core.api.item.PolymerRecipe;
 import ir.mehradn.cavesurvey.item.ModItems;
 import ir.mehradn.cavesurvey.util.upgrades.CaveMapCloning;
 import net.minecraft.core.RegistryAccess;
@@ -12,7 +13,7 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class CaveMapCloningRecipe extends CustomRecipe {
+public class CaveMapCloningRecipe extends CustomRecipe implements PolymerRecipe {
     private final CaveMapCloning upgrade;
 
     public CaveMapCloningRecipe(ResourceLocation resourceLocation, CraftingBookCategory craftingBookCategory) {

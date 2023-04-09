@@ -1,10 +1,7 @@
 package ir.mehradn.cavesurvey.item.crafting;
 
 import ir.mehradn.cavesurvey.CaveSurvey;
-import ir.mehradn.cavesurvey.util.upgrades.CaveMapExtending;
-import ir.mehradn.cavesurvey.util.upgrades.CaveMapImproving;
-import ir.mehradn.cavesurvey.util.upgrades.CaveMapLocking;
-import ir.mehradn.cavesurvey.util.upgrades.CaveMapUpgrade;
+import ir.mehradn.cavesurvey.util.upgrades.*;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -12,11 +9,19 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 
+import java.util.List;
+
 public class ModRecipes {
     public static final RecipeSerializer<CaveMapCloningRecipe> CAVE_MAP_CLONING = new SimpleCraftingRecipeSerializer<>(CaveMapCloningRecipe::new);
     public static final RecipeSerializer<CaveMapUpgradeRecipe<CaveMapExtending>> CAVE_MAP_EXTENDING = createUpgradeRecipe(new CaveMapExtending());
     public static final RecipeSerializer<CaveMapUpgradeRecipe<CaveMapImproving>> CAVE_MAP_IMPROVING = createUpgradeRecipe(new CaveMapImproving());
     public static final RecipeSerializer<CaveMapUpgradeRecipe<CaveMapLocking>> CAVE_MAP_LOCKING = createUpgradeRecipe(new CaveMapLocking());
+    public static final List<CaveMapUpgrade> CARTOGRAPHY_UPGRADES = List.of(
+        new CaveMapCloning(),
+        new CaveMapExtending(),
+        new CaveMapImproving(),
+        new CaveMapLocking()
+    );
 
     public static void register() {
         registerRecipe("crafting_special_cavemapcloning", CAVE_MAP_CLONING);

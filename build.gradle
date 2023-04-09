@@ -18,6 +18,9 @@ repositories {
     maven {
         url 'https://maven.nucleoid.xyz'
     }
+    maven {
+        url = 'https://jitpack.io'
+    }
 }
 
 dependencies {
@@ -26,6 +29,10 @@ dependencies {
         officialMojangMappings()
         parchment("org.parchmentmc.data:parchment-${project.parchment_version}@zip")
     }
+
+    implementation "com.github.LlamaLad7:MixinExtras:${project.mixin_extras_version}"
+    annotationProcessor "com.github.LlamaLad7:MixinExtras:${project.mixin_extras_version}"
+    include "com.github.LlamaLad7:MixinExtras:${project.mixin_extras_version}"
 
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"

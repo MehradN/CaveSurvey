@@ -18,15 +18,18 @@
 	"entrypoints": {
       "main": [
         "ir.mehradn.cavesurvey.CaveSurvey"
+      ],
+      "preLaunch": [
+        "ir.mehradn.cavesurvey.CaveSurveyPreLaunch"
       ]
 	},
 	"mixins": [
       "cave-survey.mixins.json"
 	],
 	"depends": {
-      "fabricloader": ">=0.14.18",
+      "fabricloader": ">=0.14.19",
       "minecraft": "~1.19.4",
       "java": ">=17",
-      "fabric-api": "*"
+      "fabric-api": ">=0.77.0+1.19.4"
 	}
 }

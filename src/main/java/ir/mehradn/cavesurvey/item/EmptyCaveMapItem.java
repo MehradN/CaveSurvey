@@ -35,12 +35,6 @@ public class EmptyCaveMapItem extends ComplexItem implements PolymerItem {
         player.awardStat(Stats.ITEM_USED.get(this));
         player.level.playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0f, 1.0f);
         player.level.playSound(null, player, SoundEvents.SCULK_CLICKING, player.getSoundSource(), 1.0f, 1.0f);
-        if (level instanceof ServerLevel serverLevel) {
-            Vec3 origin = player.getEyePosition().add(player.getHandHoldingItemAngle(ModItems.CAVE_MAP)).add(0, -1, 0);
-            serverLevel.sendParticles(new ShriekParticleOption(0), origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
-            serverLevel.sendParticles(new ShriekParticleOption(5), origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
-            serverLevel.sendParticles(new ShriekParticleOption(10), origin.x, origin.y, origin.z, 1, 0, 0, 0, 0);
-        }
 
         ItemStack newStack = CaveMapItem.create(level, player.getBlockX(), player.getBlockZ(), (byte)0, true, false);
         MapItemSavedData data = MapItem.getSavedData(newStack, level);

@@ -1,12 +1,11 @@
 package ir.mehradn.cavesurvey.item.crafting;
 
-import ir.mehradn.cavesurvey.item.CaveMapItem;
 import ir.mehradn.cavesurvey.item.ModItems;
+import ir.mehradn.cavesurvey.util.upgrades.CaveMapCloning;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CraftingBookCategory;
 import net.minecraft.world.item.crafting.CustomRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -14,24 +13,30 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class CaveMapCloningRecipe extends CustomRecipe {
+    private final CaveMapCloning upgrade;
+
     public CaveMapCloningRecipe(ResourceLocation resourceLocation, CraftingBookCategory craftingBookCategory) {
         super(resourceLocation, craftingBookCategory);
+        this.upgrade = new CaveMapCloning();
     }
 
     public boolean matches(CraftingContainer inv, Level level) {
-        int filled = 0;
+        ItemStack filled = null;
         int empty = 0;
         int other = 0;
         for (int i = 0; i < inv.getContainerSize(); i++) {
             ItemStack stack = inv.getItem(i);
-            if (stack.is(ModItems.FILLED_CAVE_MAP))
-                filled++;
-            else if (stack.is(ModItems.CAVE_MAP) || stack.is(Items.MAP))
+            if (stack.is(ModItems.FILLED_CAVE_MAP)) {
+                if (filled != null)
+                    return false;
+                filled = stack;
+            } else if (this.upgrade.acceptsItem(stack)) {
                 empty++;
-            else if (!stack.isEmpty())
+            } else if (!stack.isEmpty()) {
                 other++;
+            }
         }
-        return filled == 1 && empty > 0 && other == 0;
+        return filled != null && empty > 0 && other == 0 && this.upgrade.valid(filled, level);
     }
 
     public @NotNull ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
@@ -40,19 +45,21 @@ public class CaveMapCloningRecipe extends CustomRecipe {
         int other = 0;
         for (int i = 0; i < inv.getContainerSize(); i++) {
             ItemStack stack = inv.getItem(i);
-            if (stack.is(ModItems.FILLED_CAVE_MAP))
+            if (stack.is(ModItems.FILLED_CAVE_MAP)) {
+                if (filled != null)
+                    return ItemStack.EMPTY;
                 filled = stack;
-            else if (stack.is(ModItems.CAVE_MAP) || stack.is(Items.MAP))
+            } else if (this.upgrade.acceptsItem(stack)) {
                 empty++;
-            else if (!stack.isEmpty())
+            } else if (!stack.isEmpty()) {
                 other++;
+            }
         }
 
         if (filled == null || empty == 0 && other > 0)
             return ItemStack.EMPTY;
-        ItemStack cloned = filled.copy();
+        ItemStack cloned = this.upgrade.upgrade(filled, registryAccess);
         cloned.setCount(empty + 1);
-        CaveMapItem.setVisionLevel(cloned, 0);
         return cloned;
     }
 

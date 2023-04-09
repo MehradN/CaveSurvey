@@ -10,6 +10,10 @@ public interface CaveMapUpgrade {
 
     Item item();
 
+    default boolean acceptsItem(ItemStack stack) {
+        return stack.is(item());
+    }
+
     boolean valid(ItemStack stack, Level level);
 
     ItemStack upgrade(ItemStack stack, RegistryAccess registryAccess);

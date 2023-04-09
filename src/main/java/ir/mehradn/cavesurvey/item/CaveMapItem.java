@@ -193,6 +193,13 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         stack.getOrCreateTag().putInt(CAVE_MAP_VISION_TAG, vision);
     }
 
+    public void onCraftedBy(ItemStack stack, Level level, Player player) {
+        super.onCraftedBy(stack, level, player);
+        MapItemSavedData data = MapItem.getSavedData(stack, level);
+        if (data != null && !data.locked)
+            updateMap(level, player, data, getVisionLevel(stack));
+    }
+
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         Integer id = getMapId(stack);
         MapItemSavedData data = (id == null ? null : MapItem.getSavedData(id, level));

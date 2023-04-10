@@ -24,7 +24,7 @@ public class LootTableModification {
             return;
         LootPool.Builder pool = LootPool.lootPool()
             .add(LootItem.lootTableItem(ModItems.CAVE_MAP).setWeight(3))
-            .add(EmptyLootItem.emptyItem().setWeight(83));
+            .add(EmptyLootItem.emptyItem().setWeight(10));
         tableBuilder.withPool(pool);
     }
 }

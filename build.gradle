@@ -1,85 +1,56 @@
 plugins {
-	id 'fabric-loom' version '1.1-SNAPSHOT'
-	id 'maven-publish'
+	id 'fabric-loom' version '1.1-SNAPSHOT' apply false
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
+subprojects {
+    apply plugin: "fabric-loom"
 
-archivesBaseName = project.archives_base_name
-version = project.mod_version
-group = project.maven_group
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        mappings loom.layered() {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-${rootProject.parchment_version}@zip")
+        }
 
-repositories {
-    maven {
-        name 'ParchmentMC'
-        url 'https://maven.parchmentmc.org'
-    }
-    maven {
-        url 'https://maven.nucleoid.xyz'
-    }
-    maven {
-        url = 'https://jitpack.io'
+        implementation "com.github.LlamaLad7:MixinExtras:${rootProject.mixin_extras_version}"
+        annotationProcessor "com.github.LlamaLad7:MixinExtras:${rootProject.mixin_extras_version}"
+        include "com.github.LlamaLad7:MixinExtras:${rootProject.mixin_extras_version}"
+
+        modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
     }
 }
 
-dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings loom.layered() {
-        officialMojangMappings()
-        parchment("org.parchmentmc.data:parchment-${project.parchment_version}@zip")
+allprojects {
+    apply plugin: "java"
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
+    archivesBaseName = rootProject.archives_base_name
+    version = rootProject.mod_version
+    group = rootProject.maven_group
+
+    repositories {
+        maven {
+            name 'ParchmentMC'
+            url 'https://maven.parchmentmc.org'
+        }
+        maven {
+            url = 'https://jitpack.io'
+        }
     }
 
-    implementation "com.github.LlamaLad7:MixinExtras:${project.mixin_extras_version}"
-    annotationProcessor "com.github.LlamaLad7:MixinExtras:${project.mixin_extras_version}"
-    include "com.github.LlamaLad7:MixinExtras:${project.mixin_extras_version}"
+    tasks.withType(JavaCompile).configureEach {
+        it.options.release = 17
+    }
 
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    java {
+        withSourcesJar()
+    }
 
-    modImplementation include("eu.pb4:polymer-core:${project.polymer_version}")
-    modImplementation include("eu.pb4:polymer-resource-pack:${project.polymer_version}")
-    modImplementation include("xyz.nucleoid:server-translations-api:${project.translation_version}")
-}
-
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") {
-		expand "version": project.version
-	}
-}
-
-tasks.withType(JavaCompile).configureEach {
-	it.options.release = 17
-}
-
-java {
-	// Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
-	// if it is present.
-	// If you remove this line, sources will not be generated.
-	withSourcesJar()
-}
-
-jar {
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}"}
-	}
-}
-
-// configure the maven publication
-publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-		}
-	}
-
-	// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-	repositories {
-		// Add repositories to publish to here.
-		// Notice: This block does NOT have the same function as the block in the top level.
-		// The repositories here will be used for publishing your artifact, not for
-		// retrieving dependencies.
-	}
+    jar {
+        from("LICENSE") {
+            rename { "${it}_${rootProject.archivesBaseName}"}
+        }
+    }
 }

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "cave-survey-client",
+  "version": "${version}",
+  "name": "Cave Survey Client",
+  "description": "This mod adds some client features for the Cave Survey mod.",
+  "authors": [
+    "Mehrad Nayyeri"
+  ],
+  "contact": {
+    "homepage": "https://github.com/MehradN/CaveSurvey",
+    "sources": "https://github.com/MehradN/CaveSurvey",
+    "issues": "https://github.com/MehradN/CaveSurvey/issues"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/cave-survey-client/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "ir.mehradn.cavesurvey.CaveSurveyClient"
+    ],
+    "preLaunch": [
+      "ir.mehradn.cavesurvey.CaveSurveyClientPreLaunch"
+    ]
+  },
+  "mixins": [
+    "cave-survey-client.mixins.json"
+  ],
+  "depends": {
+    "java": ">=17",
+    "minecraft": "~1.19.4",
+    "fabricloader": ">=0.14.19"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "ir.mehradn.cavesurvey.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "accessor.MapItemAccessor",
+    "cartography.CartographyTableMenu$3Mixin",
+    "cartography.CartographyTableMenu$4Mixin",
+    "cartography.CartographyTableMenuMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

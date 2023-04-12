@@ -18,5 +18,6 @@ public class CaveSurvey implements ModInitializer {
         ModRecipes.register();
         ItemGroupModification.register();
         LootTableModification.register();
+        ModItems.registerAssets();
 	}
 }

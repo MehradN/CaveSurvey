@@ -1,7 +1,10 @@
 package ir.mehradn.cavesurvey.item;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
+import eu.pb4.polymer.resourcepack.api.PolymerModelData;
+import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import net.minecraft.core.particles.ShriekParticleOption;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -16,12 +19,19 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class EmptyCaveMapItem extends ComplexItem implements PolymerItem {
+    public static final PolymerModelData MODEL_DATA = PolymerResourcePackUtils.requestModel(Items.MAP,
+        new ResourceLocation("cave-survey", "item/cave_map"));
+
     public EmptyCaveMapItem(Properties properties) {
         super(properties);
     }
 
     public Item getPolymerItem(ItemStack itemStack, ServerPlayer player) {
         return Items.MAP;
+    }
+
+    public int getPolymerCustomModelData(ItemStack itemStack, ServerPlayer player) {
+        return MODEL_DATA.value();
     }
 
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {

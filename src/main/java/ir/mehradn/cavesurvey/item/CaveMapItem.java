@@ -5,12 +5,15 @@ import com.google.common.collect.LinkedHashMultiset;
 import com.google.common.collect.Multisets;
 import eu.pb4.polymer.core.api.item.PolymerItem;
 import eu.pb4.polymer.core.api.item.PolymerItemUtils;
+import eu.pb4.polymer.resourcepack.api.PolymerModelData;
+import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import ir.mehradn.cavesurvey.mixin.accessor.MapItemAccessor;
 import ir.mehradn.cavesurvey.util.CaveMappingAlgorithm;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
@@ -29,6 +32,8 @@ import java.util.List;
 public class CaveMapItem extends MapItem implements PolymerItem {
     public static final int MAP_SIZE = 128;
     public static final String CAVE_MAP_VISION_TAG = "vision";
+    public static final PolymerModelData MODEL_DATA = PolymerResourcePackUtils.requestModel(Items.FILLED_MAP,
+        new ResourceLocation("cave-survey", "item/filled_cave_map"));
 
     public CaveMapItem(Properties properties) {
         super(properties);
@@ -44,6 +49,10 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         if (id != null)
             MapItemAccessor.InvokeStoreMapData(out, id);
         return out;
+    }
+
+    public int getPolymerCustomModelData(ItemStack itemStack, ServerPlayer player) {
+        return MODEL_DATA.value();
     }
 
     public static ItemStack create(Level level, int x, int z, byte scale, boolean trackingPosition, boolean unlimitedTracking) {

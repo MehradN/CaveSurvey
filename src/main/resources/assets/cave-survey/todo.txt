@@ -1,0 +1,13 @@
+map -> cave_map
+filled_map -> cave_filled_map
+map_background -> cave_map_background
+checkerboard -> cave_checkerboard
+cartography_table:
+    update maps
+    eye icon (3 stages: blind, sleepy, normal)
+
+icon -> filled_map
+
+66x66
+50x50
+16x16 (+4x4)

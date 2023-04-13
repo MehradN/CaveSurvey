@@ -23,9 +23,9 @@ public interface ServerCaveMapUpgrade extends CaveMapUpgrade {
         }
     }
 
-    class Extending implements CaveMapUpgrade.Extending, ServerCaveMapUpgrade {}
+    class Extending implements CaveMapUpgrade.Extending, ServerCaveMapUpgrade { }
 
-    class Improving implements CaveMapUpgrade.Improving, ServerCaveMapUpgrade {}
+    class Improving implements CaveMapUpgrade.Improving, ServerCaveMapUpgrade { }
 
-    class Locking implements CaveMapUpgrade.Locking, ServerCaveMapUpgrade {}
+    class Locking implements CaveMapUpgrade.Locking, ServerCaveMapUpgrade { }
 }

@@ -1,7 +1,7 @@
 package ir.mehradn.cavesurvey.item.crafting;
 
 import ir.mehradn.cavesurvey.CaveSurvey;
-import ir.mehradn.cavesurvey.util.upgrades.*;
+import ir.mehradn.cavesurvey.util.upgrades.ServerCaveMapUpgrade;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;

@@ -5,11 +5,8 @@ import eu.pb4.polymer.core.api.item.PolymerItemUtils;
 import eu.pb4.polymer.resourcepack.api.PolymerModelData;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import ir.mehradn.cavesurvey.CaveSurvey;
-import ir.mehradn.cavesurvey.mixin.accessor.MapItemAccessor;
 import ir.mehradn.cavesurvey.util.CaveMapTagManager;
-import net.minecraft.core.particles.ShriekParticleOption;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.stats.Stats;
@@ -19,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class EmptyCaveMapItem extends ComplexItem implements PolymerItem {

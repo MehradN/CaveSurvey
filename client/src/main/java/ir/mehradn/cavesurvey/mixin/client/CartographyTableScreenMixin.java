@@ -5,7 +5,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import ir.mehradn.cavesurvey.util.CaveMapTagManager;
-import ir.mehradn.cavesurvey.util.upgrades.CaveMapUpgrade;
 import ir.mehradn.cavesurvey.util.upgrades.ClientCaveMapUpgrade;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,7 +22,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Environment(value= EnvType.CLIENT)
+@Environment(EnvType.CLIENT)
 @Mixin(CartographyTableScreen.class)
 public abstract class CartographyTableScreenMixin extends AbstractContainerScreen<CartographyTableMenu> {
     public CartographyTableScreenMixin(CartographyTableMenu abstractContainerMenu, Inventory inventory, Component component) {

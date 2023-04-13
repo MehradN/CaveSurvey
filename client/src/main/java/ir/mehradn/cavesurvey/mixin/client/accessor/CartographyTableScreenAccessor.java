@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
-@Environment(value= EnvType.CLIENT)
+@Environment(EnvType.CLIENT)
 @Mixin(CartographyTableScreen.class)
 public interface CartographyTableScreenAccessor {
     @Accessor("BG_LOCATION")

@@ -3,7 +3,9 @@
   "package": "ir.mehradn.cavesurvey.mixin.client",
   "compatibilityLevel": "JAVA_17",
   "client": [
-    "ItemInHandRendererMixin"
+    "CartographyTableScreenMixin",
+    "ItemInHandRendererMixin",
+    "accessor.CartographyTableScreenAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

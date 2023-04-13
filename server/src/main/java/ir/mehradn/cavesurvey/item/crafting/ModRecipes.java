@@ -11,12 +11,12 @@ import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 
 public class ModRecipes {
     public static final RecipeSerializer<CaveMapCloningRecipe> CAVE_MAP_CLONING = new SimpleCraftingRecipeSerializer<>(CaveMapCloningRecipe::new);
-    public static final RecipeSerializer<CaveMapUpgradeRecipe<ServerCaveMapExtending>> CAVE_MAP_EXTENDING =
-        createUpgradeRecipe(new ServerCaveMapExtending());
-    public static final RecipeSerializer<CaveMapUpgradeRecipe<ServerCaveMapImproving>> CAVE_MAP_IMPROVING =
-        createUpgradeRecipe(new ServerCaveMapImproving());
-    public static final RecipeSerializer<CaveMapUpgradeRecipe<ServerCaveMapLocking>> CAVE_MAP_LOCKING =
-        createUpgradeRecipe(new ServerCaveMapLocking());
+    public static final RecipeSerializer<CaveMapUpgradeRecipe<ServerCaveMapUpgrade.Extending>> CAVE_MAP_EXTENDING =
+        createUpgradeRecipe(ServerCaveMapUpgrade.EXTENDING);
+    public static final RecipeSerializer<CaveMapUpgradeRecipe<ServerCaveMapUpgrade.Improving>> CAVE_MAP_IMPROVING =
+        createUpgradeRecipe(ServerCaveMapUpgrade.IMPROVING);
+    public static final RecipeSerializer<CaveMapUpgradeRecipe<ServerCaveMapUpgrade.Locking>> CAVE_MAP_LOCKING =
+        createUpgradeRecipe(ServerCaveMapUpgrade.LOCKING);
 
     public static void register() {
         registerRecipe("crafting_special_cavemapcloning", CAVE_MAP_CLONING);

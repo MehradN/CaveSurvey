@@ -50,7 +50,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         if (id != null)
             MapItemAccessor.InvokeStoreMapData(out, id);
         CaveMapTagManager.setClientCaveMap(out);
-        CaveMapTagManager.copyVisionLevel(stack, out);
+        CaveMapTagManager.setVisionLevel(out, CaveMapTagManager.getVisionLevel(stack));
         return out;
     }
 

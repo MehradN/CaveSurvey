@@ -24,8 +24,4 @@ public class CaveMapTagManager {
     public static void setVisionLevel(ItemStack stack, int visionLevel) {
         stack.getOrCreateTag().putInt(CAVE_MAP_VISION_TAG, Mth.clamp(visionLevel, 0, 2));
     }
-
-    public static void copyVisionLevel(ItemStack from, ItemStack to) {
-        setVisionLevel(to, getVisionLevel(from));
-    }
 }

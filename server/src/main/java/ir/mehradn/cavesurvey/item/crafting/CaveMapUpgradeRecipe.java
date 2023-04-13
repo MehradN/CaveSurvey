@@ -47,7 +47,7 @@ public class CaveMapUpgradeRecipe<T extends ServerCaveMapUpgrade> extends Shaped
         for (int i = 0; i < inv.getContainerSize(); i++) {
             ItemStack stack = inv.getItem(i);
             if (stack.is(ModItems.FILLED_CAVE_MAP))
-                return this.upgrade.upgrade(stack, registryAccess);
+                return this.upgrade.upgrade(stack);
         }
         return ItemStack.EMPTY;
     }

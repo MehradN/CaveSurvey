@@ -2,7 +2,7 @@ package ir.mehradn.cavesurvey.item.crafting;
 
 import eu.pb4.polymer.core.api.item.PolymerRecipe;
 import ir.mehradn.cavesurvey.item.ModItems;
-import ir.mehradn.cavesurvey.util.upgrades.ServerCaveMapCloning;
+import ir.mehradn.cavesurvey.util.upgrades.ServerCaveMapUpgrade;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.inventory.CraftingContainer;
@@ -14,8 +14,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class CaveMapCloningRecipe extends CustomRecipe implements PolymerRecipe {
-    public static final ServerCaveMapCloning upgrade = new ServerCaveMapCloning();
-
     public CaveMapCloningRecipe(ResourceLocation resourceLocation, CraftingBookCategory craftingBookCategory) {
         super(resourceLocation, craftingBookCategory);
     }
@@ -30,13 +28,13 @@ public class CaveMapCloningRecipe extends CustomRecipe implements PolymerRecipe 
                 if (filled != null)
                     return false;
                 filled = stack;
-            } else if (upgrade.acceptsItem(stack)) {
+            } else if (ServerCaveMapUpgrade.CLONING.acceptsItem(stack)) {
                 empty++;
             } else if (!stack.isEmpty()) {
                 other++;
             }
         }
-        return filled != null && empty > 0 && other == 0 && upgrade.valid(filled, level);
+        return filled != null && empty > 0 && other == 0 && ServerCaveMapUpgrade.CLONING.valid(filled, level);
     }
 
     public @NotNull ItemStack assemble(CraftingContainer inv, RegistryAccess registryAccess) {
@@ -49,7 +47,7 @@ public class CaveMapCloningRecipe extends CustomRecipe implements PolymerRecipe 
                 if (filled != null)
                     return ItemStack.EMPTY;
                 filled = stack;
-            } else if (upgrade.acceptsItem(stack)) {
+            } else if (ServerCaveMapUpgrade.CLONING.acceptsItem(stack)) {
                 empty++;
             } else if (!stack.isEmpty()) {
                 other++;
@@ -58,7 +56,7 @@ public class CaveMapCloningRecipe extends CustomRecipe implements PolymerRecipe 
 
         if (filled == null || empty == 0 && other > 0)
             return ItemStack.EMPTY;
-        ItemStack cloned = upgrade.upgrade(filled, registryAccess);
+        ItemStack cloned = ServerCaveMapUpgrade.CLONING.upgrade(filled);
         cloned.setCount(empty + 1);
         return cloned;
     }

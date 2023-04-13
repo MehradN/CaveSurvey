@@ -9,19 +9,14 @@ import net.minecraft.world.item.crafting.CraftingRecipe;
 import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.SimpleCraftingRecipeSerializer;
 
-import java.util.List;
-
 public class ModRecipes {
     public static final RecipeSerializer<CaveMapCloningRecipe> CAVE_MAP_CLONING = new SimpleCraftingRecipeSerializer<>(CaveMapCloningRecipe::new);
-    public static final RecipeSerializer<CaveMapUpgradeRecipe<CaveMapExtending>> CAVE_MAP_EXTENDING = createUpgradeRecipe(new CaveMapExtending());
-    public static final RecipeSerializer<CaveMapUpgradeRecipe<CaveMapImproving>> CAVE_MAP_IMPROVING = createUpgradeRecipe(new CaveMapImproving());
-    public static final RecipeSerializer<CaveMapUpgradeRecipe<CaveMapLocking>> CAVE_MAP_LOCKING = createUpgradeRecipe(new CaveMapLocking());
-    public static final List<CaveMapUpgrade> CARTOGRAPHY_UPGRADES = List.of(
-        new CaveMapCloning(),
-        new CaveMapExtending(),
-        new CaveMapImproving(),
-        new CaveMapLocking()
-    );
+    public static final RecipeSerializer<CaveMapUpgradeRecipe<ServerCaveMapExtending>> CAVE_MAP_EXTENDING =
+        createUpgradeRecipe(new ServerCaveMapExtending());
+    public static final RecipeSerializer<CaveMapUpgradeRecipe<ServerCaveMapImproving>> CAVE_MAP_IMPROVING =
+        createUpgradeRecipe(new ServerCaveMapImproving());
+    public static final RecipeSerializer<CaveMapUpgradeRecipe<ServerCaveMapLocking>> CAVE_MAP_LOCKING =
+        createUpgradeRecipe(new ServerCaveMapLocking());
 
     public static void register() {
         registerRecipe("crafting_special_cavemapcloning", CAVE_MAP_CLONING);
@@ -30,7 +25,7 @@ public class ModRecipes {
         registerRecipe("crafting_special_cavemaplocking", CAVE_MAP_LOCKING);
     }
 
-    private static <T extends CaveMapUpgrade> RecipeSerializer<CaveMapUpgradeRecipe<T>> createUpgradeRecipe(T upgrade) {
+    private static <T extends ServerCaveMapUpgrade> RecipeSerializer<CaveMapUpgradeRecipe<T>> createUpgradeRecipe(T upgrade) {
         RecipeSerializer<CaveMapUpgradeRecipe<T>> serializer = new SimpleCraftingRecipeSerializer<>(
             (resourceLocation, craftingBookCategory) -> new CaveMapUpgradeRecipe<>(resourceLocation, craftingBookCategory, upgrade));
         CaveMapUpgradeRecipe.serializers.put(upgrade.id(), serializer);

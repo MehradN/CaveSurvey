@@ -1,6 +1,6 @@
 package ir.mehradn.cavesurvey.util.upgrades;
 
-import ir.mehradn.cavesurvey.item.CaveMapItem;
+import ir.mehradn.cavesurvey.util.CaveMapTagManager;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -9,25 +9,25 @@ import net.minecraft.world.item.MapItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 
-public class CaveMapImproving implements CaveMapUpgrade {
+public class CaveMapLocking implements CaveMapUpgrade {
     public Integer id() {
-        return 2;
+        return 3;
     }
 
     public Item item() {
-        return Items.AMETHYST_SHARD;
+        return Items.GLASS_PANE;
     }
 
     public boolean valid(ItemStack stack, Level level) {
         MapItemSavedData data = MapItem.getSavedData(stack, level);
-        return data != null && !data.locked && CaveMapItem.getVisionLevel(stack) < 2;
+        return data != null && !data.isExplorationMap() && !data.locked;
     }
 
     public ItemStack upgrade(ItemStack stack, RegistryAccess registryAccess) {
-        int newVision = Math.min(CaveMapItem.getVisionLevel(stack) + 1, 2);
         ItemStack newStack = stack.copy();
         newStack.setCount(1);
-        CaveMapItem.setVisionLevel(newStack, newVision);
+        newStack.getOrCreateTag().putBoolean(MapItem.MAP_LOCK_TAG, true);
+        CaveMapTagManager.setVisionLevel(newStack, 0);
         return newStack;
     }
 }

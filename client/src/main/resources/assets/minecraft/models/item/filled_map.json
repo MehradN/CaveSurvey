@@ -1,0 +1,15 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "item/filled_map",
+    "layer1": "item/filled_map_markings"
+  },
+  "overrides": [
+    {
+      "model": "cave-survey:item/filled_cave_map",
+      "predicate": {
+        "cave-survey-client:cave": 1
+      }
+    }
+  ]
+}

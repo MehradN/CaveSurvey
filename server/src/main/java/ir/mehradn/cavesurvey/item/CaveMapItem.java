@@ -9,6 +9,7 @@ import eu.pb4.polymer.resourcepack.api.PolymerModelData;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import ir.mehradn.cavesurvey.CaveSurvey;
 import ir.mehradn.cavesurvey.mixin.accessor.MapItemAccessor;
+import ir.mehradn.cavesurvey.util.CaveMapTagManager;
 import ir.mehradn.cavesurvey.util.CaveMappingAlgorithm;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -32,8 +33,6 @@ import java.util.List;
 
 public class CaveMapItem extends MapItem implements PolymerItem {
     public static final int MAP_SIZE = 128;
-    public static final String CAVE_MAP_VISION_TAG = "vision";
-    public static final String CAVE_MAP_CLIENT_TAG = "cave-survey";
     public static final PolymerModelData MODEL_DATA = PolymerResourcePackUtils.requestModel(Items.FILLED_MAP,
         new ResourceLocation(CaveSurvey.MOD_ID, "item/filled_cave_map"));
 
@@ -50,7 +49,8 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         Integer id = getMapId(stack);
         if (id != null)
             MapItemAccessor.InvokeStoreMapData(out, id);
-        out.getOrCreateTag().putBoolean(CAVE_MAP_CLIENT_TAG, true);
+        CaveMapTagManager.setClientCaveMap(out);
+        CaveMapTagManager.copyVisionLevel(stack, out);
         return out;
     }
 
@@ -61,7 +61,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
     public static ItemStack create(Level level, int x, int z, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
         ItemStack stack = new ItemStack(ModItems.FILLED_CAVE_MAP);
         MapItemAccessor.InvokeCreateAndStoreSavedData(stack, level, x, z, scale, trackingPosition, unlimitedTracking, level.dimension());
-        setVisionLevel(stack, 0);
+        CaveMapTagManager.setVisionLevel(stack, 0);
         return stack;
     }
 
@@ -194,25 +194,15 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         updateBanners(level, viewer, data);
     }
 
-    public static int getVisionLevel(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains(CAVE_MAP_VISION_TAG, 99))
-            return 0;
-        return tag.getInt(CAVE_MAP_VISION_TAG);
-    }
-
-    public static void setVisionLevel(ItemStack stack, int vision) {
-        stack.getOrCreateTag().putInt(CAVE_MAP_VISION_TAG, vision);
-    }
-
     public void onCraftedBy(ItemStack stack, Level level, Player player) {
         super.onCraftedBy(stack, level, player);
         MapItemSavedData data = MapItem.getSavedData(stack, level);
         if (data != null && !data.locked)
-            updateMap(level, player, data, getVisionLevel(stack));
+            updateMap(level, player, data, CaveMapTagManager.getVisionLevel(stack));
     }
 
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
+        // TODO: move to client
         Integer id = getMapId(stack);
         MapItemSavedData data = (id == null ? null : MapItem.getSavedData(id, level));
         CompoundTag tag = stack.getTag();
@@ -234,7 +224,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
             if (toBeScaled == 0 || !toBeLocked)
                 tooltipComponents.add(Component.translatable("filled_map.id", id).withStyle(ChatFormatting.GRAY));
 
-            int vision = Math.min(getVisionLevel(stack), 2);
+            int vision = Math.min(CaveMapTagManager.getVisionLevel(stack), 2);
             tooltipComponents.add(Component.translatable("filled_cave_map.vision", 1 << (vision + 4)).withStyle(ChatFormatting.GRAY));
             tooltipComponents.add(Component.translatable("filled_cave_map.vision_level", vision, 2).withStyle(ChatFormatting.GRAY));
 
@@ -255,7 +245,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         if (data.locked)
             return InteractionResultHolder.consume(stack);
 
-        updateMap(level, player, data, getVisionLevel(stack));
+        updateMap(level, player, data, CaveMapTagManager.getVisionLevel(stack));
         return InteractionResultHolder.success(stack);
     }
 }

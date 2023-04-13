@@ -1,3 +1,14 @@
+configurations {
+    dev {
+        canBeResolved = false
+        canBeConsumed = true
+    }
+}
+
+artifacts {
+    dev jar
+}
+
 processResources {
     inputs.property "version", rootProject.version
 

@@ -4,12 +4,16 @@ repositories {
     }
 }
 
-dependencies {
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+loom {
+    accessWidenerPath = project(":client").loom.accessWidenerPath
+}
 
+dependencies {
     modImplementation include("eu.pb4:polymer-core:${rootProject.polymer_version}")
     modImplementation include("eu.pb4:polymer-resource-pack:${rootProject.polymer_version}")
     modImplementation include("xyz.nucleoid:server-translations-api:${rootProject.translation_version}")
+
+    implementation include(project(path: ":client", configuration: "dev"))
 }
 
 processResources {

@@ -2,9 +2,7 @@
   "required": true,
   "package": "ir.mehradn.cavesurvey.mixin.client",
   "compatibilityLevel": "JAVA_17",
-  "client": [
-    "ItemInHandRenderMixin"
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }

@@ -17,6 +17,7 @@ subprojects {
         include "com.github.LlamaLad7:MixinExtras:${rootProject.mixin_extras_version}"
 
         modImplementation "net.fabricmc:fabric-loader:${rootProject.loader_version}"
+        modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
     }
 }
 

@@ -1,8 +1,7 @@
 package ir.mehradn.cavesurvey.mixin.cartography;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import ir.mehradn.cavesurvey.item.crafting.ModRecipes;
-import ir.mehradn.cavesurvey.util.upgrades.CaveMapUpgrade;
+import ir.mehradn.cavesurvey.util.upgrades.ServerCaveMapUpgrade;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -17,7 +16,7 @@ public abstract class CartographyTableMenu$4Mixin extends Slot {
 
     @ModifyReturnValue(method = "mayPlace", at = @At("RETURN"))
     private boolean acceptCaveMapUpgrades(boolean original, ItemStack stack) {
-        for (CaveMapUpgrade upgrade : ModRecipes.CARTOGRAPHY_UPGRADES)
+        for (ServerCaveMapUpgrade upgrade : ServerCaveMapUpgrade.ALL_UPGRADES)
             original = (original || upgrade.acceptsItem(stack));
         return original;
     }

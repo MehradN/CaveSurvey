@@ -1,3 +1,5 @@
+archivesBaseName = rootProject.server_name
+
 repositories {
     maven {
         url 'https://maven.nucleoid.xyz'

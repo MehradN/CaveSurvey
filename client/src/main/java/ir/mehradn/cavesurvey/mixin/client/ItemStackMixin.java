@@ -51,8 +51,8 @@ public abstract class ItemStackMixin {
             instance.add(Component.translatable("filled_map.id", id).withStyle(ChatFormatting.GRAY));
 
         int vision = Math.min(CaveMapTagManager.getVisionLevel(stack), 2);
-        instance.add(Component.translatable("filled_cave_map.vision", 1 << (vision + 4)).withStyle(ChatFormatting.GRAY));
-        instance.add(Component.translatable("filled_cave_map.vision_level", vision, 2).withStyle(ChatFormatting.GRAY));
+        instance.add(Component.translatable("filled_cave_map.sight_range", 1 << (vision + 4)).withStyle(ChatFormatting.GRAY));
+        instance.add(Component.translatable("filled_cave_map.sight_level", vision, 2).withStyle(ChatFormatting.GRAY));
 
         int scale = Math.min(data.scale + toBeScaled, 2);
         instance.add(Component.translatable("filled_map.scale", 1 << scale).withStyle(ChatFormatting.GRAY));

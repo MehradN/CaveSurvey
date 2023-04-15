@@ -214,6 +214,15 @@ public class CaveMapItem extends MapItem implements PolymerItem {
             tooltipComponents.add(Component.literal("#" + id).withStyle(ChatFormatting.GRAY));
         if (data.locked || toBeLocked)
             tooltipComponents.add(Component.translatable("filled_map.locked").withStyle(ChatFormatting.GRAY));
+        else {
+            int vision = CaveMapTagManager.getVisionLevel(stack);
+            if (vision == 0)
+                tooltipComponents.add(Component.translatable("filled_cave_map.low_sight").withStyle(ChatFormatting.GRAY));
+            else if (vision == 1)
+                tooltipComponents.add(Component.translatable("filled_cave_map.medium_sight").withStyle(ChatFormatting.GRAY));
+            else
+                tooltipComponents.add(Component.translatable("filled_cave_map.high_sight").withStyle(ChatFormatting.GRAY));
+        }
     }
 
     public int countHoverText(ItemStack stack, Level level) {
@@ -227,10 +236,8 @@ public class CaveMapItem extends MapItem implements PolymerItem {
             return 0;
 
         boolean toBeLocked = tag.getBoolean(MapItem.MAP_LOCK_TAG);
-        int count = 0;
+        int count = 1;
         if (!stack.hasCustomHoverName())
-            count++;
-        if (data.locked || toBeLocked)
             count++;
         return count;
     }

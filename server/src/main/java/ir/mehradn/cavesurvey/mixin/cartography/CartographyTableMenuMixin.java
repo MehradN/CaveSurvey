@@ -47,7 +47,6 @@ public abstract class CartographyTableMenuMixin extends AbstractContainerMenu {
             ItemStack newStack = null;
             for (ServerCaveMapUpgrade upgrade : ServerCaveMapUpgrade.ALL_UPGRADES) {
                 if (upgrade.acceptsItem(upgradeItem) && upgrade.valid(map, level)) {
-                    System.out.println("HI MOM!");
                     newStack = upgrade.upgrade(map);
                     this.broadcastChanges();
                     break;

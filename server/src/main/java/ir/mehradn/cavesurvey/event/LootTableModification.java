@@ -23,8 +23,8 @@ public class LootTableModification {
         if (!id.equals(ANCIENT_CITY_LOOT_TABLE_ID))
             return;
         LootPool.Builder pool = LootPool.lootPool()
-            .add(LootItem.lootTableItem(ModItems.CAVE_MAP).setWeight(3))
-            .add(EmptyLootItem.emptyItem().setWeight(10));
+            .add(LootItem.lootTableItem(ModItems.CAVE_MAP).setWeight(6))
+            .add(EmptyLootItem.emptyItem().setWeight(7));
         tableBuilder.withPool(pool);
     }
 }

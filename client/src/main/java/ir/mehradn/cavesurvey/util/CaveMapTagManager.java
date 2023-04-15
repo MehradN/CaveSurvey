@@ -21,11 +21,11 @@ public class CaveMapTagManager {
     public static int getVisionLevel(ItemStack stack) {
         if (stack.getTag() == null)
             return 0;
-        return Mth.clamp(stack.getTag().getInt(CAVE_MAP_VISION_TAG), 0, 2);
+        return Mth.clamp(stack.getTag().getByte(CAVE_MAP_VISION_TAG), 0, 2);
     }
 
     public static void setVisionLevel(ItemStack stack, int visionLevel) {
-        stack.getOrCreateTag().putInt(CAVE_MAP_VISION_TAG, Mth.clamp(visionLevel, 0, 2));
+        stack.getOrCreateTag().putByte(CAVE_MAP_VISION_TAG, (byte)Mth.clamp(visionLevel, 0, 2));
     }
 
     public static void setLore(ItemStack stack, int lore) {

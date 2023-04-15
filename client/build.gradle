@@ -1,3 +1,5 @@
+archivesBaseName = rootProject.client_name
+
 configurations {
     dev {
         canBeResolved = false

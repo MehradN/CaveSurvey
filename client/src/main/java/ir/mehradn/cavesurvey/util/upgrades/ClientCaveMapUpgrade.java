@@ -68,7 +68,7 @@ public interface ClientCaveMapUpgrade extends CaveMapUpgrade {
             RenderSystem.setShaderTexture(0, CARTOGRAPHY_TEXTURE);
             poseStack.pushPose();
             poseStack.translate(0.0f, 0.0f, 1.0f);
-            int eye = 132 + 16 * CaveMapTagManager.getVisionLevel(mapStack);
+            int eye = 132 + 16 * CaveMapTagManager.getSightLevel(mapStack);
             CartographyTableScreen.blit(poseStack, leftPos + 112, topPos + 60, eye, 50, 16, 16);
             poseStack.popPose();
         }

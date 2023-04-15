@@ -50,7 +50,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         Integer id = getMapId(stack);
         if (id != null)
             MapItemAccessor.invokeStoreMapData(out, id);
-        CaveMapTagManager.setVisionLevel(out, CaveMapTagManager.getVisionLevel(stack));
+        CaveMapTagManager.setSightLevel(out, CaveMapTagManager.getSightLevel(stack));
         CaveMapTagManager.setLore(out, countHoverText(stack, player.level));
         return out;
     }
@@ -62,11 +62,11 @@ public class CaveMapItem extends MapItem implements PolymerItem {
     public static ItemStack create(Level level, int x, int z, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
         ItemStack stack = new ItemStack(ModItems.FILLED_CAVE_MAP);
         MapItemAccessor.invokeCreateAndStoreSavedData(stack, level, x, z, scale, trackingPosition, unlimitedTracking, level.dimension());
-        CaveMapTagManager.setVisionLevel(stack, 0);
+        CaveMapTagManager.setSightLevel(stack, 0);
         return stack;
     }
 
-    public static void updateMap(Level level, Entity viewer, MapItemSavedData data, int vision) {
+    public static void updateMap(Level level, Entity viewer, MapItemSavedData data, int sight) {
         if (level.dimension() != data.dimension || !(viewer instanceof Player player))
             return;
 
@@ -76,7 +76,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         int centerZ = data.centerZ;
         int relativeX = (headPos.getX() - centerX) / scale + MAP_SIZE / 2;
         int relativeZ = (headPos.getZ() - centerZ) / scale + MAP_SIZE / 2;
-        int blockRadius = 1 << (vision + 4);
+        int blockRadius = 1 << (sight + 4);
         int pixelRadius = blockRadius / scale;
 
         if (MAP_SIZE + pixelRadius + 4 < relativeX || relativeX < -pixelRadius - 4 ||
@@ -199,7 +199,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         super.onCraftedBy(stack, level, player);
         MapItemSavedData data = MapItem.getSavedData(stack, level);
         if (data != null && !data.locked)
-            updateMap(level, player, data, CaveMapTagManager.getVisionLevel(stack));
+            updateMap(level, player, data, CaveMapTagManager.getSightLevel(stack));
     }
 
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
@@ -215,10 +215,10 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         if (data.locked || toBeLocked)
             tooltipComponents.add(Component.translatable("filled_map.locked").withStyle(ChatFormatting.GRAY));
         else {
-            int vision = CaveMapTagManager.getVisionLevel(stack);
-            if (vision == 0)
+            int sight = CaveMapTagManager.getSightLevel(stack);
+            if (sight == 0)
                 tooltipComponents.add(Component.translatable("filled_cave_map.low_sight").withStyle(ChatFormatting.GRAY));
-            else if (vision == 1)
+            else if (sight == 1)
                 tooltipComponents.add(Component.translatable("filled_cave_map.medium_sight").withStyle(ChatFormatting.GRAY));
             else
                 tooltipComponents.add(Component.translatable("filled_cave_map.high_sight").withStyle(ChatFormatting.GRAY));
@@ -253,7 +253,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         if (data.locked)
             return InteractionResultHolder.consume(stack);
 
-        updateMap(level, player, data, CaveMapTagManager.getVisionLevel(stack));
+        updateMap(level, player, data, CaveMapTagManager.getSightLevel(stack));
         return InteractionResultHolder.success(stack);
     }
 }

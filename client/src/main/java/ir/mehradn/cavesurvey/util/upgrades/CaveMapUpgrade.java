@@ -40,7 +40,7 @@ public interface CaveMapUpgrade {
         default ItemStack upgrade(ItemStack mapStack) {
             ItemStack newStack = mapStack.copy();
             newStack.setCount(2);
-            CaveMapTagManager.setVisionLevel(mapStack, 0);
+            CaveMapTagManager.setSightLevel(mapStack, 0);
             return newStack;
         }
     }
@@ -86,14 +86,14 @@ public interface CaveMapUpgrade {
 
         default boolean valid(ItemStack stack, Level level) {
             MapItemSavedData data = MapItem.getSavedData(stack, level);
-            return data != null && !data.locked && CaveMapTagManager.getVisionLevel(stack) < 2;
+            return data != null && !data.locked && CaveMapTagManager.getSightLevel(stack) < 2;
         }
 
         default ItemStack upgrade(ItemStack mapStack) {
-            int newVision = CaveMapTagManager.getVisionLevel(mapStack) + 1;
+            int newVision = CaveMapTagManager.getSightLevel(mapStack) + 1;
             ItemStack newStack = mapStack.copy();
             newStack.setCount(1);
-            CaveMapTagManager.setVisionLevel(newStack, newVision);
+            CaveMapTagManager.setSightLevel(newStack, newVision);
             return newStack;
         }
     }
@@ -120,7 +120,7 @@ public interface CaveMapUpgrade {
             ItemStack newStack = mapStack.copy();
             newStack.setCount(1);
             newStack.getOrCreateTag().putBoolean(MapItem.MAP_LOCK_TAG, true);
-            CaveMapTagManager.setVisionLevel(newStack, 0);
+            CaveMapTagManager.setSightLevel(newStack, 0);
             return newStack;
         }
     }

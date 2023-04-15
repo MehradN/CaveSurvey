@@ -1,11 +1,9 @@
 package ir.mehradn.cavesurvey.item;
 
 import eu.pb4.polymer.core.api.item.PolymerItem;
-import eu.pb4.polymer.core.api.item.PolymerItemUtils;
 import eu.pb4.polymer.resourcepack.api.PolymerModelData;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import ir.mehradn.cavesurvey.CaveSurvey;
-import ir.mehradn.cavesurvey.util.CaveMapTagManager;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -28,12 +26,6 @@ public class EmptyCaveMapItem extends ComplexItem implements PolymerItem {
 
     public Item getPolymerItem(ItemStack stack, ServerPlayer player) {
         return Items.MAP;
-    }
-
-    public ItemStack getPolymerItemStack(ItemStack stack, TooltipFlag context, ServerPlayer player) {
-        ItemStack out = PolymerItemUtils.createItemStack(stack, context, player);
-        CaveMapTagManager.setClientCaveMap(out);
-        return out;
     }
 
     public int getPolymerCustomModelData(ItemStack stack, ServerPlayer player) {

@@ -5,6 +5,7 @@
   "client": [
     "CartographyTableScreenMixin",
     "ItemInHandRendererMixin",
+    "ItemStackMixin",
     "accessor.CartographyTableScreenAccessor"
   ],
   "injectors": {

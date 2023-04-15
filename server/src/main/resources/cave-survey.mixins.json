@@ -3,6 +3,7 @@
   "package": "ir.mehradn.cavesurvey.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "accessor.ItemStackAccessor",
     "accessor.MapItemAccessor",
     "cartography.CartographyTableMenu$3Mixin",
     "cartography.CartographyTableMenu$4Mixin",

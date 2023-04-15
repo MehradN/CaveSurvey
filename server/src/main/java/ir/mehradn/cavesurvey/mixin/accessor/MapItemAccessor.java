@@ -10,13 +10,13 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(MapItem.class)
 public interface MapItemAccessor {
     @Invoker("createAndStoreSavedData")
-    static void InvokeCreateAndStoreSavedData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition,
+    static void invokeCreateAndStoreSavedData(ItemStack stack, Level level, int x, int z, int scale, boolean trackingPosition,
                                               boolean unlimitedTracking, ResourceKey<Level> dimension) {
         throw new LinkageError();
     }
 
     @Invoker("storeMapData")
-    static void InvokeStoreMapData(ItemStack stack, int mapId) {
+    static void invokeStoreMapData(ItemStack stack, int mapId) {
         throw new LinkageError();
     }
 }

@@ -8,6 +8,7 @@ import eu.pb4.polymer.core.api.item.PolymerItemUtils;
 import eu.pb4.polymer.resourcepack.api.PolymerModelData;
 import eu.pb4.polymer.resourcepack.api.PolymerResourcePackUtils;
 import ir.mehradn.cavesurvey.CaveSurvey;
+import ir.mehradn.cavesurvey.mixin.accessor.ItemStackAccessor;
 import ir.mehradn.cavesurvey.mixin.accessor.MapItemAccessor;
 import ir.mehradn.cavesurvey.util.CaveMapTagManager;
 import ir.mehradn.cavesurvey.util.CaveMappingAlgorithm;
@@ -48,9 +49,9 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         ItemStack out = PolymerItemUtils.createItemStack(stack, context, player);
         Integer id = getMapId(stack);
         if (id != null)
-            MapItemAccessor.InvokeStoreMapData(out, id);
-        CaveMapTagManager.setClientCaveMap(out);
+            MapItemAccessor.invokeStoreMapData(out, id);
         CaveMapTagManager.setVisionLevel(out, CaveMapTagManager.getVisionLevel(stack));
+        CaveMapTagManager.setLore(out, countHoverText(stack, player.level));
         return out;
     }
 
@@ -60,7 +61,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
 
     public static ItemStack create(Level level, int x, int z, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
         ItemStack stack = new ItemStack(ModItems.FILLED_CAVE_MAP);
-        MapItemAccessor.InvokeCreateAndStoreSavedData(stack, level, x, z, scale, trackingPosition, unlimitedTracking, level.dimension());
+        MapItemAccessor.invokeCreateAndStoreSavedData(stack, level, x, z, scale, trackingPosition, unlimitedTracking, level.dimension());
         CaveMapTagManager.setVisionLevel(stack, 0);
         return stack;
     }
@@ -202,36 +203,36 @@ public class CaveMapItem extends MapItem implements PolymerItem {
     }
 
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
-        // TODO: move to client
         Integer id = getMapId(stack);
         MapItemSavedData data = (id == null ? null : MapItem.getSavedData(id, level));
         CompoundTag tag = stack.getTag();
-        if (id == null || data == null || tag == null) {
-            if (isAdvanced.isAdvanced())
-                tooltipComponents.add(Component.translatable("filled_map.unknown").withStyle(ChatFormatting.GRAY));
+        if (id == null || data == null || tag == null)
             return;
-        }
-        int toBeScaled = tag.getInt(MapItem.MAP_SCALE_TAG);
+
         boolean toBeLocked = tag.getBoolean(MapItem.MAP_LOCK_TAG);
-
-        if (!isAdvanced.isAdvanced() && !stack.hasCustomHoverName())
+        if (!stack.hasCustomHoverName())
             tooltipComponents.add(Component.literal("#" + id).withStyle(ChatFormatting.GRAY));
-
         if (data.locked || toBeLocked)
             tooltipComponents.add(Component.translatable("filled_map.locked").withStyle(ChatFormatting.GRAY));
+    }
 
-        if (isAdvanced.isAdvanced()) {
-            if (toBeScaled == 0 || !toBeLocked)
-                tooltipComponents.add(Component.translatable("filled_map.id", id).withStyle(ChatFormatting.GRAY));
+    public int countHoverText(ItemStack stack, Level level) {
+        if (!ItemStackAccessor.invokeShouldShowInTooltip(((ItemStackAccessor)(Object)stack).invokeGetHideFlags(), ItemStack.TooltipPart.ADDITIONAL))
+            return -1;
 
-            int vision = Math.min(CaveMapTagManager.getVisionLevel(stack), 2);
-            tooltipComponents.add(Component.translatable("filled_cave_map.vision", 1 << (vision + 4)).withStyle(ChatFormatting.GRAY));
-            tooltipComponents.add(Component.translatable("filled_cave_map.vision_level", vision, 2).withStyle(ChatFormatting.GRAY));
+        Integer id = getMapId(stack);
+        MapItemSavedData data = (id == null ? null : MapItem.getSavedData(id, level));
+        CompoundTag tag = stack.getTag();
+        if (id == null || data == null || tag == null)
+            return 0;
 
-            int scale = Math.min(data.scale + toBeScaled, 2);
-            tooltipComponents.add(Component.translatable("filled_map.scale", 1 << scale).withStyle(ChatFormatting.GRAY));
-            tooltipComponents.add(Component.translatable("filled_map.level", scale, 2).withStyle(ChatFormatting.GRAY));
-        }
+        boolean toBeLocked = tag.getBoolean(MapItem.MAP_LOCK_TAG);
+        int count = 0;
+        if (!stack.hasCustomHoverName())
+            count++;
+        if (data.locked || toBeLocked)
+            count++;
+        return count;
     }
 
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {

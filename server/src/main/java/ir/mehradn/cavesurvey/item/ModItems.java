@@ -6,9 +6,10 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 
 public class ModItems {
-    public static final Item CAVE_MAP = new EmptyCaveMapItem(new Item.Properties());
+    public static final Item CAVE_MAP = new EmptyCaveMapItem(new Item.Properties().rarity(Rarity.UNCOMMON));
     public static final Item FILLED_CAVE_MAP = new CaveMapItem(new Item.Properties());
 
     public static void register() {

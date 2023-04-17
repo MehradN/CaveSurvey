@@ -2,6 +2,7 @@ package ir.mehradn.cavesurvey;
 
 import ir.mehradn.cavesurvey.event.ItemGroupModification;
 import ir.mehradn.cavesurvey.event.LootTableModification;
+import ir.mehradn.cavesurvey.event.VillagerTradeModification;
 import ir.mehradn.cavesurvey.item.ModItems;
 import ir.mehradn.cavesurvey.item.crafting.ModRecipes;
 import net.fabricmc.api.ModInitializer;
@@ -21,6 +22,7 @@ public class CaveSurvey implements ModInitializer {
         LOGGER.info("Registering events...");
         ItemGroupModification.register();
         LootTableModification.register();
+        VillagerTradeModification.register();
         LOGGER.info("Registering polymer assets...");
         ModItems.registerAssets();
         LOGGER.info("Registering cave-survey completed!");

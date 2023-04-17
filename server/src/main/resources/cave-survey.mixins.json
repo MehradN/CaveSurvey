@@ -5,6 +5,7 @@
   "mixins": [
     "accessor.ItemStackAccessor",
     "accessor.MapItemAccessor",
+    "accessor.MerchantOfferAccessor",
     "cartography.CartographyTableMenu$3Mixin",
     "cartography.CartographyTableMenu$4Mixin",
     "cartography.CartographyTableMenuMixin"

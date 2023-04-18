@@ -1,7 +1,6 @@
 package ir.mehradn.cavesurvey.event;
 
 import ir.mehradn.cavesurvey.item.ModItems;
-import ir.mehradn.cavesurvey.item.trade.CustomItemsAndEmeraldsToItems;
 import net.fabricmc.fabric.api.object.builder.v1.trade.TradeOfferHelper;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
@@ -15,6 +14,6 @@ public class VillagerTradeModification {
     }
 
     public static void addCaveMapTrade(List<VillagerTrades.ItemListing> trades) {
-        trades.add(new CustomItemsAndEmeraldsToItems(Items.ECHO_SHARD, 1, 57, ModItems.CAVE_MAP, 3, 3, 30, 0.2f));
+        trades.add(new VillagerTrades.ItemsAndEmeraldsToItems(Items.ECHO_SHARD, 2, 36, ModItems.CAVE_MAP, 3, 3, 30));
     }
 }

@@ -20,11 +20,14 @@
       "ir.mehradn.cavesurvey.CaveSurveyClient"
     ],
     "preLaunch": [
-      "ir.mehradn.cavesurvey.CaveSurveyClientPreLaunch"
+      "ir.mehradn.cavesurvey.CaveSurveyPreLaunch"
     ]
   },
   "mixins": [
-    "cave-survey-client.mixins.json"
+    {
+      "config": "cave-survey-client.mixins.json",
+      "environment": "client"
+    }
   ],
   "depends": {
     "java": ">=17",

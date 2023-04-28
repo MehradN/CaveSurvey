@@ -7,15 +7,19 @@ repositories {
 }
 
 loom {
-    accessWidenerPath = project(":client").loom.accessWidenerPath
+    accessWidenerPath = project(":common").loom.accessWidenerPath
 }
 
 dependencies {
+    include "com.github.LlamaLad7:MixinExtras:${rootProject.mixin_extras_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+
     modImplementation include("eu.pb4:polymer-core:${rootProject.polymer_version}")
     modImplementation include("eu.pb4:polymer-resource-pack:${rootProject.polymer_version}")
     modImplementation include("xyz.nucleoid:server-translations-api:${rootProject.translation_version}")
 
-    implementation include(project(path: ":client", configuration: "dev"))
+    implementation include(project(path: ":common", configuration: "namedElements")) { transitive false }
+    implementation include(project(path: ":client", configuration: "namedElements"))
 }
 
 processResources {

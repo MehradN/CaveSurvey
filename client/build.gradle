@@ -1,14 +1,14 @@
 archivesBaseName = rootProject.client_name
 
-configurations {
-    dev {
-        canBeResolved = false
-        canBeConsumed = true
-    }
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
 }
 
-artifacts {
-    dev jar
+dependencies {
+    include "com.github.LlamaLad7:MixinExtras:${rootProject.mixin_extras_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_version}"
+
+    implementation include(project(path: ":common", configuration: "namedElements")) { transitive false }
 }
 
 processResources {

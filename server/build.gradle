@@ -1,4 +1,6 @@
-archivesBaseName = rootProject.server_name
+base {
+    archivesName = rootProject.server_name
+}
 
 repositories {
     maven {

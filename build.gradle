@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.1-SNAPSHOT' apply false
+	id 'fabric-loom' version '1.2-SNAPSHOT' apply false
 }
 
 subprojects {
@@ -22,9 +22,6 @@ subprojects {
 allprojects {
     apply plugin: "java"
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-
     version = rootProject.mod_version
     group = rootProject.maven_group
 
@@ -44,6 +41,9 @@ allprojects {
 
     java {
         withSourcesJar()
+
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     jar {

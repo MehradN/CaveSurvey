@@ -1,4 +1,6 @@
-archivesBaseName = rootProject.client_name
+base {
+    archivesName = rootProject.client_name
+}
 
 loom {
     accessWidenerPath = project(":common").loom.accessWidenerPath

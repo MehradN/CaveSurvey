@@ -1,1 +1,3 @@
-archivesBaseName = rootProject.common_name
+base {
+    archivesName = rootProject.common_name
+}

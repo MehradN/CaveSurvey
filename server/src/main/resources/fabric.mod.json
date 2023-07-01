@@ -12,7 +12,7 @@
     "sources": "https://github.com/MehradN/CaveSurvey",
     "issues": "https://github.com/MehradN/CaveSurvey/issues"
   },
-  "license": "GPL-3.0",
+  "license": "LGPL-3.0-or-later",
   "icon": "assets/cave-survey/icon.png",
   "environment": "*",
   "entrypoints": {

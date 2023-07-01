@@ -14,10 +14,9 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.ShapedRecipe;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.HashMap;
 
-public class CaveMapUpgradeRecipe<T extends ServerCaveMapUpgrade> extends ShapedRecipe implements PolymerRecipe {
+public class CaveMapUpgradeRecipe <T extends ServerCaveMapUpgrade> extends ShapedRecipe implements PolymerRecipe {
     public static final HashMap<Integer, RecipeSerializer<?>> serializers = new HashMap<>();
     private final T upgrade;
 

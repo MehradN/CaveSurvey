@@ -9,8 +9,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.MaterialColor;
-
+import net.minecraft.world.level.material.MapColor;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,13 +51,13 @@ public class CaveMappingAlgorithm {
         return cloud.pixelInfo;
     }
 
-    public record PixelInfo(MaterialColor color, int y, int fluidDepth, boolean reachesSky) { }
+    public record PixelInfo(MapColor color, int y, int fluidDepth, boolean reachesSky) { }
 
     public static final class PixelMatrix {
-        public PixelInfo[][] matrix;
         public final int size;
         public final int centerX;
         public final int centerZ;
+        public PixelInfo[][] matrix;
 
         public PixelMatrix(int halfSize, int centerX, int centerZ) {
             this.size = halfSize;
@@ -69,7 +68,7 @@ public class CaveMappingAlgorithm {
 
         public boolean outOfRange(int x, int z) {
             return this.centerX - this.size > x || x >= this.centerX + this.size
-                || this.centerZ - this.size > z || z >= this.centerZ + this.size;
+                   || this.centerZ - this.size > z || z >= this.centerZ + this.size;
         }
 
         public boolean outOfRange(BlockPos pos) {
@@ -114,7 +113,7 @@ public class CaveMappingAlgorithm {
                 this.chunks.add(level.getChunk(chunkPos.x, chunkPos.z + 1));
         }
 
-        public MaterialColor getColor(BlockPos pos) {
+        public MapColor getColor(BlockPos pos) {
             if (pos.getY() <= this.level.getMinBuildHeight() + 1)
                 return Blocks.BEDROCK.defaultBlockState().getMapColor(this.level, pos);
 
@@ -139,7 +138,7 @@ public class CaveMappingAlgorithm {
                 if (chunk.getPos().equals(chunkPos)) {
                     BlockState state = chunk.getBlockState(pos);
 
-                    MaterialColor color;
+                    MapColor color;
                     int fluidDepth = 0;
                     if (state.getFluidState().isEmpty()) {
                         color = state.getMapColor(this.level, pos);
@@ -202,7 +201,7 @@ public class CaveMappingAlgorithm {
         }
 
         private static boolean colorless(BlockPos pos, ColorGrabber colorGrabber) {
-            return colorGrabber.getColor(pos) == MaterialColor.NONE;
+            return colorGrabber.getColor(pos) == MapColor.NONE;
         }
     }
 }

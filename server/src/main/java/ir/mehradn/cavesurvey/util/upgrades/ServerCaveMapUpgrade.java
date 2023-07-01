@@ -3,7 +3,6 @@ package ir.mehradn.cavesurvey.util.upgrades;
 import ir.mehradn.cavesurvey.item.ModItems;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-
 import java.util.List;
 
 public interface ServerCaveMapUpgrade extends CaveMapUpgrade {
@@ -18,6 +17,7 @@ public interface ServerCaveMapUpgrade extends CaveMapUpgrade {
     }
 
     class Cloning implements CaveMapUpgrade.Cloning, ServerCaveMapUpgrade {
+        @Override
         public boolean acceptsItem(ItemStack stack) {
             return stack.is(Items.MAP) || stack.is(ModItems.CAVE_MAP);
         }

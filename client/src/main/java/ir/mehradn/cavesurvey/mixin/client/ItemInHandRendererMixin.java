@@ -28,13 +28,12 @@ public class ItemInHandRendererMixin {
         new ResourceLocation(CaveSurveyClient.MOD_ID, "textures/map/cave_map_background.png"));
     private static final RenderType CAVE_MAP_BACKGROUND_CHECKERBOARD = RenderType.text(
         new ResourceLocation(CaveSurveyClient.MOD_ID, "textures/map/cave_map_background_checkerboard.png"));
-
     @Shadow @Final private Minecraft minecraft;
 
     @WrapOperation(method = "renderMap", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/MultiBufferSource;getBuffer(Lnet/minecraft/client/renderer/RenderType;)Lcom/mojang/blaze3d/vertex/VertexConsumer;"))
     private VertexConsumer useCaveMapTextures(MultiBufferSource instance, RenderType texture, Operation<VertexConsumer> original,
                                               PoseStack matrixStack, MultiBufferSource buffer, int combinedLight, ItemStack stack) {
-        if (!CaveMapTagManager.getClientCaveMap(stack))
+        if (!CaveMapTagManager.isClientCaveMap(stack))
             return original.call(instance, texture);
         MapItemSavedData data = MapItem.getSavedData(stack, this.minecraft.level);
         return buffer.getBuffer(data == null ? CAVE_MAP_BACKGROUND : CAVE_MAP_BACKGROUND_CHECKERBOARD);

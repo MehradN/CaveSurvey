@@ -24,14 +24,17 @@ public class EmptyCaveMapItem extends ComplexItem implements PolymerItem {
         super(properties);
     }
 
+    @Override
     public Item getPolymerItem(ItemStack stack, ServerPlayer player) {
         return Items.MAP;
     }
 
+    @Override
     public int getPolymerCustomModelData(ItemStack stack, ServerPlayer player) {
         return MODEL_DATA.value();
     }
 
+    @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
         if (level.isClientSide)
@@ -41,8 +44,8 @@ public class EmptyCaveMapItem extends ComplexItem implements PolymerItem {
             stack.shrink(1);
 
         player.awardStat(Stats.ITEM_USED.get(this));
-        player.level.playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0f, 1.0f);
-        player.level.playSound(null, player, SoundEvents.SCULK_CLICKING, player.getSoundSource(), 1.0f, 1.0f);
+        player.level().playSound(null, player, SoundEvents.UI_CARTOGRAPHY_TABLE_TAKE_RESULT, player.getSoundSource(), 1.0f, 1.0f);
+        player.level().playSound(null, player, SoundEvents.SCULK_CLICKING, player.getSoundSource(), 1.0f, 1.0f);
 
         ItemStack newStack = CaveMapItem.create(level, player.getBlockX(), player.getBlockZ(), (byte)0, true, false);
         MapItemSavedData data = MapItem.getSavedData(newStack, level);

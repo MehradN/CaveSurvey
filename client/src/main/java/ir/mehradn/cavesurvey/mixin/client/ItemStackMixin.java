@@ -17,7 +17,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -29,11 +28,11 @@ public abstract class ItemStackMixin {
         original.call(instance, component);
 
         ItemStack stack = (ItemStack)(Object)this;
-        if (!isAdvanced.isAdvanced() || !CaveMapTagManager.getClientCaveMap(stack) || CaveMapTagManager.getLore(stack) == -1)
+        if (!isAdvanced.isAdvanced() || !CaveMapTagManager.isClientCaveMap(stack) || CaveMapTagManager.getLore(stack) == -1)
             return true;
 
         Integer id = MapItem.getMapId(stack);
-        MapItemSavedData data = (id == null || player == null ? null : MapItem.getSavedData(id, player.level));
+        MapItemSavedData data = (id == null || player == null ? null : MapItem.getSavedData(id, player.level()));
         CompoundTag tag = stack.getTag();
         if (id == null || data == null || tag == null) {
             if (isAdvanced.isAdvanced())

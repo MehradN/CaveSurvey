@@ -21,6 +21,6 @@ public class ModItemProperties {
     }
 
     private static float clientCaveMapProperty(ItemStack stack, ClientLevel level, LivingEntity entity, int i) {
-        return (CaveMapTagManager.getClientCaveMap(stack) ? 1 : 0);
+        return (CaveMapTagManager.isClientCaveMap(stack) ? 1 : 0);
     }
 }

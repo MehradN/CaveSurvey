@@ -25,11 +25,9 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.material.MaterialColor;
+import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.saveddata.maps.MapItemSavedData;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
 import java.util.List;
 
 public class CaveMapItem extends MapItem implements PolymerItem {
@@ -39,24 +37,6 @@ public class CaveMapItem extends MapItem implements PolymerItem {
 
     public CaveMapItem(Properties properties) {
         super(properties);
-    }
-
-    public Item getPolymerItem(ItemStack stack, ServerPlayer player) {
-        return Items.FILLED_MAP;
-    }
-
-    public ItemStack getPolymerItemStack(ItemStack stack, TooltipFlag context, ServerPlayer player) {
-        ItemStack out = PolymerItemUtils.createItemStack(stack, context, player);
-        Integer id = getMapId(stack);
-        if (id != null)
-            MapItemAccessor.invokeStoreMapData(out, id);
-        CaveMapTagManager.setSightLevel(out, CaveMapTagManager.getSightLevel(stack));
-        CaveMapTagManager.setLore(out, countHoverText(stack, player.level));
-        return out;
-    }
-
-    public int getPolymerCustomModelData(ItemStack stack, ServerPlayer player) {
-        return MODEL_DATA.value();
     }
 
     public static ItemStack create(Level level, int x, int z, byte scale, boolean trackingPosition, boolean unlimitedTracking) {
@@ -97,7 +77,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
                 double averageFluidDepth = 0.0;
                 int pixelCount = 0;
                 int brightCount = 0;
-                LinkedHashMultiset<MaterialColor> innerColors = LinkedHashMultiset.create();
+                LinkedHashMultiset<MapColor> innerColors = LinkedHashMultiset.create();
                 for (int innerX = 0; innerX < scale; innerX++) {
                     for (int innerZ = 0; innerZ < scale; innerZ++) {
                         int x = realX + innerX;
@@ -123,10 +103,10 @@ public class CaveMapItem extends MapItem implements PolymerItem {
                 averageHeight /= pixelCount;
                 averageFluidDepth /= pixelCount;
 
-                MaterialColor color = Iterables.getFirst(Multisets.copyHighestCountFirst(innerColors), MaterialColor.NONE);
+                MapColor color = Iterables.getFirst(Multisets.copyHighestCountFirst(innerColors), MapColor.NONE);
 
                 int brightnessLevel;
-                if (color == MaterialColor.WATER) {
+                if (color == MapColor.WATER) {
                     double darkness = averageFluidDepth * 0.1 + (double)(pixelX + pixelZ & 1) * 0.2;
                     if (darkness > 0.9)
                         brightnessLevel = 0;
@@ -135,7 +115,8 @@ public class CaveMapItem extends MapItem implements PolymerItem {
                     else
                         brightnessLevel = 2;
                 } else {
-                    double brightness = (averageHeight - previousAverageHeight) * 4.0 / (double)(scale + 4) + ((double)(pixelX + pixelZ & 1) - 0.5) * 0.4;
+                    double brightness =
+                        (averageHeight - previousAverageHeight) * 4.0 / (double)(scale + 4) + ((double)(pixelX + pixelZ & 1) - 0.5) * 0.4;
                     if (brightness < -0.6)
                         brightnessLevel = 0;
                     else if (brightness < 0.6)
@@ -150,12 +131,12 @@ public class CaveMapItem extends MapItem implements PolymerItem {
                 if (pixelCount < Mth.square(scale) / 2 || distance >= Mth.square(pixelRadius))
                     continue;
 
-                MaterialColor.Brightness brightness = Arrays.asList(
-                    MaterialColor.Brightness.LOWEST,
-                    MaterialColor.Brightness.LOW,
-                    MaterialColor.Brightness.NORMAL,
-                    MaterialColor.Brightness.HIGH
-                ).get(brightnessLevel);
+                MapColor.Brightness brightness = switch (brightnessLevel) {
+                    case 0 -> MapColor.Brightness.LOWEST;
+                    case 1 -> MapColor.Brightness.LOW;
+                    case 2 -> MapColor.Brightness.NORMAL;
+                    default -> MapColor.Brightness.HIGH;
+                };
                 data.updateColor(pixelX, pixelZ, color.getPackedId(brightness));
             }
         }
@@ -191,10 +172,49 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         }
     }
 
+    public int countHoverText(ItemStack stack, Level level) {
+        if (!ItemStackAccessor.invokeShouldShowInTooltip(((ItemStackAccessor)(Object)stack).invokeGetHideFlags(), ItemStack.TooltipPart.ADDITIONAL))
+            return -1;
+
+        Integer id = getMapId(stack);
+        MapItemSavedData data = (id == null ? null : MapItem.getSavedData(id, level));
+        CompoundTag tag = stack.getTag();
+        if (id == null || data == null || tag == null)
+            return 0;
+
+        int count = 1;
+        if (!stack.hasCustomHoverName())
+            count++;
+        return count;
+    }
+
+    @Override
+    public Item getPolymerItem(ItemStack stack, ServerPlayer player) {
+        return Items.FILLED_MAP;
+    }
+
+    @Override
+    public ItemStack getPolymerItemStack(ItemStack stack, TooltipFlag context, ServerPlayer player) {
+        ItemStack out = PolymerItemUtils.createItemStack(stack, context, player);
+        Integer id = getMapId(stack);
+        if (id != null)
+            MapItemAccessor.invokeStoreMapData(out, id);
+        CaveMapTagManager.setSightLevel(out, CaveMapTagManager.getSightLevel(stack));
+        CaveMapTagManager.setLore(out, countHoverText(stack, player.level()));
+        return out;
+    }
+
+    @Override
+    public int getPolymerCustomModelData(ItemStack stack, ServerPlayer player) {
+        return MODEL_DATA.value();
+    }
+
+    @Override
     public void update(Level level, Entity viewer, MapItemSavedData data) {
         updateBanners(level, viewer, data);
     }
 
+    @Override
     public void onCraftedBy(ItemStack stack, Level level, Player player) {
         super.onCraftedBy(stack, level, player);
         MapItemSavedData data = MapItem.getSavedData(stack, level);
@@ -202,6 +222,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
             updateMap(level, player, data, CaveMapTagManager.getSightLevel(stack));
     }
 
+    @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltipComponents, TooltipFlag isAdvanced) {
         Integer id = getMapId(stack);
         MapItemSavedData data = (id == null ? null : MapItem.getSavedData(id, level));
@@ -225,23 +246,7 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         }
     }
 
-    public int countHoverText(ItemStack stack, Level level) {
-        if (!ItemStackAccessor.invokeShouldShowInTooltip(((ItemStackAccessor)(Object)stack).invokeGetHideFlags(), ItemStack.TooltipPart.ADDITIONAL))
-            return -1;
-
-        Integer id = getMapId(stack);
-        MapItemSavedData data = (id == null ? null : MapItem.getSavedData(id, level));
-        CompoundTag tag = stack.getTag();
-        if (id == null || data == null || tag == null)
-            return 0;
-
-        boolean toBeLocked = tag.getBoolean(MapItem.MAP_LOCK_TAG);
-        int count = 1;
-        if (!stack.hasCustomHoverName())
-            count++;
-        return count;
-    }
-
+    @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand usedHand) {
         ItemStack stack = player.getItemInHand(usedHand);
         if (level.isClientSide)

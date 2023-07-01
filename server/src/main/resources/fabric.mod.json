@@ -3,7 +3,7 @@
   "id": "cave-survey",
   "version": "${version}",
   "name": "Cave Survey",
-  "description": "This mod adds cave maps to the game.",
+  "description": "Advanced cave maps based on 3D path-finding",
   "authors": [
     "Mehrad Nayyeri"
   ],

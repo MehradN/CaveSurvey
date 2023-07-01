@@ -3,7 +3,7 @@
   "id": "cave-survey-client",
   "version": "${version}",
   "name": "Cave Survey Client",
-  "description": "This mod adds some client features for the Cave Survey mod.",
+  "description": "Optional client-side mod for playing on servers with Cave Survey installed on them",
   "authors": [
     "Mehrad Nayyeri"
   ],

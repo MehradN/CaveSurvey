@@ -3,6 +3,7 @@ package ir.mehradn.cavesurvey.mixin.cartography;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import ir.mehradn.cavesurvey.item.ModItems;
+import ir.mehradn.cavesurvey.util.CaveMapTagManager;
 import ir.mehradn.cavesurvey.util.upgrades.ServerCaveMapUpgrade;
 import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.Item;
@@ -33,8 +34,10 @@ public abstract class CartographyTableMenuMixin extends AbstractContainerMenu {
 
     @WrapOperation(method = "quickMoveStack", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;is(Lnet/minecraft/world/item/Item;)Z"))
     private boolean supportQuickMove(ItemStack instance, Item item, Operation<Boolean> original) {
-        if (item == Items.FILLED_MAP && instance.is(ModItems.FILLED_CAVE_MAP))
+        if (item == Items.FILLED_MAP && (instance.is(ModItems.FILLED_CAVE_MAP) || CaveMapTagManager.isClientCaveMap(instance)))
             return true;
+        if (item == Items.MAP && (instance.is(ModItems.CAVE_MAP) || CaveMapTagManager.isClientCaveMap(instance)))
+            return false;
         if (item == Items.PAPER)
             for (ServerCaveMapUpgrade upgrade : ServerCaveMapUpgrade.ALL_UPGRADES)
                 if (upgrade.acceptsItem(instance))

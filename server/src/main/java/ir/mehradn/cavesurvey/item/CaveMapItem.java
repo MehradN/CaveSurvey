@@ -18,6 +18,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -251,6 +252,8 @@ public class CaveMapItem extends MapItem implements PolymerItem {
         ItemStack stack = player.getItemInHand(usedHand);
         if (level.isClientSide)
             return InteractionResultHolder.success(stack);
+
+        player.awardStat(Stats.ITEM_USED.get(this));
 
         MapItemSavedData data = getSavedData(stack, level);
         if (data == null)
